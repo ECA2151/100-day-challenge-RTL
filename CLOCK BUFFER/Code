@@ -1,0 +1,6 @@
+module clkbuf(iclk,oclk);
+input iclk;
+output oclk;
+buf  b1(oclk,iclk);
+endmodule
+
