@@ -1,0 +1,49 @@
+`timescale 1ns / 1ps
+module clkbuf_tb();
+reg iclk;
+wire oclk;
+realtime t1;
+realtime t2;
+realtime t3;
+realtime t4,t5,t6;
+clkbuf uut(
+     .iclk(iclk),
+     .oclk(oclk)
+);
+initial
+begin
+iclk=1'b0;
+forever #10 iclk=~iclk;
+end
+task first();
+    begin
+    @(posedge iclk) t1 = $realtime;
+    @(posedge  iclk) t2 = $realtime;
+    t3 = t2-t1;
+    end
+endtask
+task last();
+    begin
+    @(posedge oclk) t4 = $realtime;
+    @(posedge  oclk) t5 = $realtime;
+    t6 = t5-t4;
+    end
+endtask
+task middle();
+  realtime f,p;
+    begin
+    f = t6-t3;
+    p = t4-t1;
+    $display("freq_diff=%0t,phase_diff=%0t",f,p);
+    end
+endtask
+initial
+   begin
+    fork
+      first;
+      last;
+    join
+       middle;
+   end
+   
+endmodule
