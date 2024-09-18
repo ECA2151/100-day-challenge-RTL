@@ -1,0 +1,33 @@
+module ram_tb( );reg we;
+reg re;reg [15:0]d;
+wire [15:0]o;reg [2:0]addw;
+reg [2:0]addr;reg clk;
+reg rst;ram8x16 uut(
+    .we(we),    .re(re),
+    .d(d),    .o(o),
+    .addw(addw),    .addr(addr),
+    .clk(clk),    .rst(rst)
+);
+always #10 clk=~clk;task initialize;
+ begin    we=0;
+    re=0;    d=16'b0;
+    rst=1;    clk=0;
+    addw=3'b0;    addr=3'b0;
+  end      
+endtasktask W(input [15:0]D,input [2:0]ADDW,input WE);
+   begin     d=D;
+     addw=ADDW;     we=WE;
+     #10;     we =0;
+   end endtask
+ task R(input [15:0]RE,input [2:0]ADDR);   begin
+      re=RE;     addr=ADDR;
+     #10;     re=0;
+          
+   end
+   endtask   initial 
+      begin      initialize();
+          #10;
+          rst=0;          W( 16'b1001010101010101,3'b101,1'b1);
+          #10;          R(1'b1,3'b101);
+          #10          $finish;
+       endendmodule
