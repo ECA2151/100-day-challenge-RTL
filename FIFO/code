@@ -1,0 +1,50 @@
+module FIFO(rst,clk,d,o,full,empty,we,re);
+input rst;
+input clk;
+output full;
+output empty;
+input we;
+input re;
+reg [3:0]counter;
+reg [3:0]pr_w;
+reg [3:0]pr_r;
+reg [7:0]men[15:0];
+ input [7:0]d;
+ integer i;
+ output reg [7:0]o;
+assign empty=(counter<=4'b0000)?1'b0:1'b1;
+assign full=(counter<=4'b0111)?1'b1:1'b0;
+always@(posedge clk or posedge rst)
+
+begin
+if(rst)
+begin
+
+
+    counter<=0;
+    o<=0;
+    pr_r<=0;
+    pr_w<=0;
+  for(i=0;i<16;i=i+1)
+     men[i]<=8'b0;
+ end
+else if(!full&&we)
+begin
+    men[pr_w]<=d;
+    pr_w<=pr_w+1;
+    counter=counter+1;
+ end
+
+else if(!empty&&re)
+begin
+    o<=men[pr_r];
+    pr_r<=pr_r+1;
+    counter=counter-1;
+ end
+ 
+ begin
+  counter<=counter;
+    pr_r<=pr_w;
+ end
+end
+endmodule
