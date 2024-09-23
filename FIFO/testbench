@@ -1,0 +1,86 @@
+module tb_FIFO;
+  
+  // Testbench signals
+  reg clk;
+  reg rst;
+  reg we;
+  reg re;
+  reg [7:0] d;
+  wire [7:0] o;
+  wire full;
+  wire empty;
+  
+  // Instantiate the FIFO module
+  FIFO dut (
+    .rst(rst),
+    .clk(clk),
+    .d(d),
+    .o(o),
+    .full(full),
+    .empty(empty),
+    .we(we),
+    .re(re)
+  );
+  
+  // Clock generation
+  always #5 clk = ~clk;  // 10ns clock period
+
+  // Test sequence
+  initial begin
+    // Initialize signals
+    clk = 0;
+    rst = 0;
+    we = 0;
+    re = 0;
+    d = 8'b0;
+
+    // Apply reset
+    rst = 1;
+    #10;  // Hold reset for 10ns
+    rst = 0;
+    #10;
+
+    // Write data into the FIFO
+    we = 1;
+    d = 8'hA1;  // Write first value
+    #10;
+    d = 8'hB2;  // Write second value
+    #10;
+    d = 8'hC3;  // Write third value
+    #10;
+    d = 8'hD4;  // Write fourth value
+    #10;
+    we = 0;  // Stop writing
+    
+    // Read data from the FIFO
+    re = 1;
+    #10;
+    re = 0;  // Stop reading for now
+    #10;
+
+    // Try writing more data
+    we = 1;
+    d = 8'hE5;  // Write another value
+    #10;
+    we = 0;
+    #10;
+
+    // Read remaining data
+    re = 1;
+    #10;
+    #10;
+    #10;
+    re = 0;
+
+    // Check empty and full signals
+    #10;
+    $finish;
+  end
+
+  // Monitor the signals
+  initial begin
+    $monitor("Time = %0d, we = %b, re = %b, d = %h, o = %h, full = %b, empty = %b, counter = %d",
+             $time, we, re, d, o, full, empty, dut.counter);
+  end
+  
+endmodule
