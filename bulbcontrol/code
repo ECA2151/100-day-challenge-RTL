@@ -1,0 +1,22 @@
+module bulbcontrol(
+input s,
+input s1,
+input s2,
+output reg B1,B2,B3
+ );
+ always@(*)
+ begin
+ if(s==1)
+ begin
+    B1 = s1&~s2;
+    B2 = ~s1&s2;
+    B3 =  s1&s2;
+    end
+  else
+    begin
+      B1=0;
+      B2=0;
+      B3=0;
+    end
+  end
+endmodule
