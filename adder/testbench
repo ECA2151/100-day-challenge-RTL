@@ -1,0 +1,30 @@
+module adder_tb;
+  // Declare variables to be connected to the module inputs and output
+  reg a;
+  reg b;
+  wire y;
+
+  // Instantiate the adder module
+  adder uut (
+    .a(a),
+    .b(b),
+    .y(y)
+  );
+
+  // Test procedure
+  initial begin
+    // Display the output header
+    $display("A B | Y");
+    $display("---------");
+
+    // Apply inputs and display the results
+    a = 0; b = 0; #10; $display("%b %b | %b", a, b, y);
+    a = 0; b = 1; #10; $display("%b %b | %b", a, b, y);
+    a = 1; b = 0; #10; $display("%b %b | %b", a, b, y);
+    a = 1; b = 1; #10; $display("%b %b | %b", a, b, y);
+
+    // Finish the simulation
+    $finish;
+    #50;
+  end
+endmodule
