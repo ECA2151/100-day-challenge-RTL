@@ -1,19 +1,21 @@
-module tb-one- second-pulse-generator ();
+module tbsecondpulsegenerator();
 reg clk;
-reg reset:
-wire sec. pulse;
-one- second-pulse-generator uut(
+reg rst;
+wire pulse;
+one_second_pulse_generator uut(
 .clk (clk),
 .reset (reset),
-.sec-pulse (Sec-pulse)
+.pulse (pulse)
 );
 initial begin
 clk=0;
 forever # 1 clk = ~ clk;
 end
-initial bagin
-reset = 1;
-#10 reset = 0;
-# 1000$ Stop
+initial 
+begin
+rst <= 1;
+#10 rst <= 0;
+# 1000
+$finish;
 end
 endmodule
