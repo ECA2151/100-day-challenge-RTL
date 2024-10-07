@@ -1,0 +1,26 @@
+module decoder_tb;
+   reg a;
+   reg b;
+   wire y;
+   wire p;
+   wire n;
+   wire m;
+   
+   decoder uut(
+     .a(a),
+     .b(b),
+     .y(y),
+     .p(p),
+     .n(n),
+     .m(m)
+     );
+     initial begin
+      $display("A B|Y P N M");
+      $display("--------");
+      a = 0;b = 0;#10;$display("%b %b|%b",a,b,y,p,n,m);
+      a = 0;b = 1;#10;$display("%b %b|%b",a,b,y,p,n,m);
+      a = 1;b = 0;#10;$display("%b %b|%b",a,b,y,p,n,m);
+      a = 1;b = 1;#10;$display("%b %b|%b",a,b,y,p,n,m);
+      $finish;
+      end
+endmodule
