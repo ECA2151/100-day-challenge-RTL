@@ -1,0 +1,23 @@
+module mux_tb;
+   reg [3:0]I;
+   reg [1:0]c;
+   wire y3;
+   mux4 uut(
+
+         .I(I),
+         .c(c),.y3(y3)
+   );
+  initial 
+  begin 
+  I=1;
+  c=1;
+  end
+  
+   
+
+           
+      
+       
+    
+   
+endmodule
