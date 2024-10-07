@@ -1,0 +1,31 @@
+module mux (
+    input a,
+    input b,
+    input c,
+    output reg y
+);
+
+    always @(*) begin
+        if (c == 0)
+            y = a;
+        else
+            y = b;
+    end
+
+endmodule
+
+module mux4(
+     input [3:0]I,
+     input [1:0]c,
+     output y3
+     );
+     wire y1,y2;
+  
+  mux mux1(.a(I[0]),.b(I[1]),.c(c[0]),.y(y1));
+    mux mux2(.a(I[2]),.b(I[3]),.c(c[0]),.y(y2));
+      mux mux3(.a(y1),.b(y2),.c(c[1]),.y(y3));
+  
+     
+      
+     
+endmodule
