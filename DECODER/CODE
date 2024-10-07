@@ -1,0 +1,9 @@
+module decoder(a,b,y,p,n,m);
+   input a,b;
+   output y,p,n,m;
+   assign y = ~a&~b;
+   assign p = ~a&b;
+   assign n = a&~b;
+   assign m = a&b;
+
+endmodule
