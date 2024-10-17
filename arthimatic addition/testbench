@@ -1,0 +1,16 @@
+module alu_tb();
+  reg [3:0]a;
+  reg [3:0]b;
+  wire c;
+  alu uut(
+    .a(a),
+    .b(b),
+    .c(c)
+ 
+    );
+    initial begin
+       a=4'd5;
+       b=4'd7;
+  
+      end
+endmodule
