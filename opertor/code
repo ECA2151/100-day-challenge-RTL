@@ -1,0 +1,15 @@
+module opertor();
+ reg signed[2:0] a;
+ reg [2:0]b;
+ reg [2:0]x;
+ reg [2:0]y;
+ reg [7:0]c;
+ initial
+  begin
+  a=5 ; b=2;
+  x=b<<1;
+  y=a>>>2;
+  c={a,b};
+  $display("x = %b, y = %b,c=%b",x,y,a,b,c);
+  end
+endmodule
