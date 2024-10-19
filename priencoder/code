@@ -1,0 +1,43 @@
+module encoder(
+       input [7:0] i,
+       output [2:0] y
+       );
+     assign y[0] = i[1] | i[3] | i[5] | i[7];
+     assign y[1] = i[2] | i[3] | i[6] | i[7];
+     assign y[2] = i[4] | i[5] | i[6] | i[7];
+endmodule
+
+module pri(
+         input [7:0] h,
+         output [7:0] a,
+         output idle
+         );
+         assign a[7] = h[7];
+         assign a[6] = h[6] & ~h[7];
+         assign a[5] = h[5] & ~h[6] & ~h[7];
+         assign a[4] = h[4] & ~h[5] & ~h[6] & ~h[7];
+         assign a[3] = h[3] & ~h[4] & ~h[5] & ~h[6] & ~h[7];
+         assign a[2] = h[2] & ~h[3] & ~h[4] & ~h[5] & ~h[6] & ~h[7];
+         assign a[1] = h[1] & ~h[2] & ~h[3] & ~h[4] & ~h[5] & ~h[6] & ~h[7];
+         assign a[0] = h[0] & ~h[1] & ~h[2] & ~h[3] & ~h[4] & ~h[5] & ~h[6] & ~h[7];
+         assign idle = ~h[0] & ~h[1] & ~h[2] & ~h[3] & ~h[4] & ~h[5] & ~h[6] & ~h[7];
+endmodule
+
+module priecoder(
+        input [7:0] h,
+        output [2:0] y,
+        output idle
+        );
+        wire [7:0] a;
+        
+        pri pri_instance (
+            .h(h),
+            .a(a),
+            .idle(idle)
+        );
+
+        encoder encoder_instance ( 
+            .i(a),
+            .y(y)
+        );
+endmodule
