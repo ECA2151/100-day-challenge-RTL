@@ -1,0 +1,43 @@
+module priecoder_tb;
+  reg [7:0] h;
+  wire [2:0] y;
+  wire idle;
+
+  
+  priecoder uut (
+    .h(h),
+    .y(y),
+    .idle(idle)
+  );
+
+ 
+  task apply_test;
+    input [7:0] h_in;
+    input [2:0] expected_y;
+    input expected_idle;
+
+    begin
+      h = h_in;
+      #10; 
+      if (y === expected_y && idle === expected_idle) begin
+        $display("PASS: h = %b, y = %b, idle = %b", h, y, idle);
+      end else begin
+        $display("FAIL: h = %b, expected y = %b, got y = %b, expected idle = %b, got idle = %b", 
+                 h, expected_y, y, expected_idle, idle);
+      end
+    end
+  endtask
+
+  
+  initial begin
+    
+    apply_test(8'b00000000, 3'b000, 1'b1);    
+    apply_test(8'b00000001, 3'b000, 1'b0); 
+    apply_test(8'b00001000, 3'b010, 1'b0); 
+    apply_test(8'b10000000, 3'b111, 1'b0);
+    apply_test(8'b01111111, 3'b110, 1'b0); 
+    apply_test(8'b10101010, 3'b111, 1'b0);
+
+    $finish;
+  end
+endmodule
