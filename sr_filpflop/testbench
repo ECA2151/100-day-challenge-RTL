@@ -5,44 +5,61 @@ module sr_tb();
   reg rst;
   wire q;
 
-SR uut(
+  // Instantiate the SR module
+  SR uut(
     .s(s),
     .r(r),
     .rst(rst),
     .clk(clk),
-    .q(q) );
-task t(
-    input reg i1,
-    input reg i2,
-    input reg rst1
-    );
-    
-    begin
-          s = i1;
-          r = i1;
-          rst = rst1;
-    end
-  endtask
-  task initialize;
-      begin
-        t(0,0,1);
-        #10
-        rst=0;
-      end
+    .q(q)
+  );
 
-   endtask
-    initial
-       begin
-       clk = 0;
-       initialize;
-       begin
-         t(0,0,0);
-         #10;
-         t(0,1,0);
-         #10;
-         t(1,0,0);
-         #10;
-         t(1,1,0);
-         #10;
-         $finish;
-       end
+  // Task to apply inputs
+  task t(
+    input reg i1,   // input s
+    input reg i2,   // input r
+    input reg rst1  // input rst
+  );
+  begin
+    s = i1;
+    r = i2;    // Corrected: r should be i2, not i1
+    rst = rst1;
+  end
+  endtask
+
+  // Task to initialize the test
+  task initialize;
+  begin
+    t(0, 0, 1);  // Reset initially
+    #10;
+    rst = 0;     // Release reset
+  end
+  endtask
+
+  // Clock generation (toggle every 5 time units)
+  always #5 clk = ~clk;
+
+  // Initial block to apply test vectors
+  initial begin
+    clk = 0;        // Start clock at 0
+    initialize;     // Initialize the system
+
+    // Apply test inputs
+    t(0, 0, 0);    // Hold state
+    #10;
+    t(0, 1, 0);    // Reset state
+    #10;
+    t(1, 0, 0);    // Set state
+    #10;
+    t(1, 1, 0);    // Invalid state
+    #10;
+
+    $finish;       // End simulation
+  end
+
+  // Optional: Monitor the signals
+  initial begin
+    $monitor("Time=%0t | s=%b, r=%b, rst=%b, q=%b", $time, s, r, rst, q);
+  end
+
+endmodule
