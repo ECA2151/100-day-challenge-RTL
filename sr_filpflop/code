@@ -1,0 +1,27 @@
+module SR(
+ input s,
+ input r,
+ input clk,
+ input rst,
+ output reg q
+ 
+ );
+ parameter
+     HOLD = 2'b00,
+     RESET = 2'b01,
+     SET= 2'b10,
+     INV=2'b11;
+ always@(posedge clk)
+   begin
+       if(rst==1)
+         q = 1'b0;
+       else
+       begin
+       case({s,r})
+              HOLD: q<=q;
+              RESET:q<=1'b0;
+              SET:q<=1'b1;
+              INV:q<=1'bx;
+       endcase
+     end
+  end
