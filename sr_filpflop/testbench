@@ -1,0 +1,48 @@
+module sr_tb();
+  reg s;
+  reg r;
+  reg clk;
+  reg rst;
+  wire q;
+
+SR uut(
+    .s(s),
+    .r(r),
+    .rst(rst),
+    .clk(clk),
+    .q(q) );
+task t(
+    input reg i1,
+    input reg i2,
+    input reg rst1
+    );
+    
+    begin
+          s = i1;
+          r = i1;
+          rst = rst1;
+    end
+  endtask
+  task initialize;
+      begin
+        t(0,0,1);
+        #10
+        rst=0;
+      end
+
+   endtask
+    initial
+       begin
+       clk = 0;
+       initialize;
+       begin
+         t(0,0,0);
+         #10;
+         t(0,1,0);
+         #10;
+         t(1,0,0);
+         #10;
+         t(1,1,0);
+         #10;
+         $finish;
+       end
